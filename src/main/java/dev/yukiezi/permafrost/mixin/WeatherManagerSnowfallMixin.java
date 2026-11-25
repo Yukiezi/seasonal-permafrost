@@ -20,8 +20,10 @@ public abstract class WeatherManagerSnowfallMixin {
     )
     private static void seasonalPermafrost$precipitation(Level level, Biome biome, BlockPos pos,
             CallbackInfoReturnable<Precipitation> cir) {
-        if (cir.getReturnValue() == Precipitation.NONE || !SnowlineCalculator.shouldOverride(biome)) return;
-        cir.setReturnValue(pos.getY() > SnowlineCalculator.getSnowline(level)
+        if (cir.getReturnValue() == Precipitation.NONE || level == null
+                || !level.dimension().equals(Level.OVERWORLD)
+                || !SnowlineCalculator.shouldOverride(biome)) return;
+        cir.setReturnValue(SnowlineCalculator.hasSnowAt(level, biome, pos)
                 ? Precipitation.SNOW : Precipitation.RAIN);
     }
 
