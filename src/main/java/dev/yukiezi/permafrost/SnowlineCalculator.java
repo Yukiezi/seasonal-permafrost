@@ -19,13 +19,13 @@ public final class SnowlineCalculator {
     /**
      * Uses one stable pseudo-random value per X/Z column, shared by rendering,
      * precipitation and snow placement. The chance rises by 10% per block
-     * through the ten-block band below the calculated snowline.
+     * through the ten-block band above the calculated snowline.
      */
     public static boolean hasSnowAt(Level level, Biome biome, BlockPos pos) {
         if (level == null || pos == null || !shouldOverride(biome)) return false;
 
         int snowline = getSnowline(level);
-        int chance = (pos.getY() - (snowline - VARIATION_BAND)) * 10;
+        int chance = (pos.getY() - snowline) * 10;
         if (chance <= 0) return false;
         if (chance >= 100) return true;
 
