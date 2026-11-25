@@ -3,6 +3,7 @@ package dev.yukiezi.permafrost;
 import com.teamtea.eclipticseasons.api.EclipticSeasonsApi;
 import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
 import com.teamtea.eclipticseasons.api.util.EclipticUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
@@ -11,7 +12,34 @@ public final class SnowlineCalculator {
     public static final int AUTUMN_FLOOR = 115;
     public static final int WINTER_HEIGHT = 0;
 
+    private static final int VARIATION_BAND = 10;
+
     private SnowlineCalculator() {}
+
+    /**
+     * Uses one stable pseudo-random value per X/Z column, shared by rendering,
+     * precipitation and snow placement. The chance rises by 10% per block
+     * through the ten-block band below the calculated snowline.
+     */
+    public static boolean hasSnowAt(Level level, Biome biome, BlockPos pos) {
+        if (level == null || pos == null || !shouldOverride(biome)) return false;
+
+        int snowline = getSnowline(level);
+        int chance = (pos.getY() - (snowline - VARIATION_BAND)) * 10;
+        if (chance <= 0) return false;
+        if (chance >= 100) return true;
+
+        long hash = (long) pos.getX() * 0x9E3779B97F4A7C15L
+                ^ (long) pos.getZ() * 0xC2B2AE3D27D4EB4FL;
+        hash ^= hash >>> 30;
+        hash *= 0xBF58476D1CE4E5B9L;
+        hash ^= hash >>> 27;
+        hash *= 0x94D049BB133111EBL;
+        hash ^= hash >>> 31;
+
+        int percentile = (int) Math.floorMod(hash, 100L);
+        return percentile < chance;
+    }
 
     public static boolean shouldOverride(Biome biome) {
         float temperature = biome.getBaseTemperature();
