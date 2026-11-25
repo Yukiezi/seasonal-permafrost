@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "seasonal_permafrost",
+  "version": "${version}",
+  "name": "Seasonal Permafrost",
+  "description": "Moves Ecliptic Seasons' snowline with the 24 solar terms.",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["dev.yukiezi.permafrost.SeasonalPermafrost"]
+  },
+  "mixins": [
+    "seasonal-permafrost.mixins.json",
+    { "config": "seasonal-permafrost.client.mixins.json", "environment": "client" }
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.0",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "fabric-api": "*",
+    "eclipticseasons": "*"
+  }
+}
