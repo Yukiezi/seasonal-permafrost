@@ -29,7 +29,7 @@ public final class SnowlineCalculator {
 
         int ordinal = term.ordinal();
         int daysInTerm = Math.max(1, api.getLastingDaysOfEachTerm(level));
-        double dayProgress = Math.floorMod(level.getLevelData().getDayTime(), 24000L) / 24000.0;
+        double dayProgress = Math.floorMod(level.getGameTime(), 24000L) / 24000.0;
         double termProgress = (api.getDayInTerm(level) + dayProgress) / daysInTerm;
         termProgress = Math.max(0.0, Math.min(1.0, termProgress));
 
