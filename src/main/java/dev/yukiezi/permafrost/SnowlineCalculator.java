@@ -2,6 +2,7 @@ package dev.yukiezi.permafrost;
 
 import com.teamtea.eclipticseasons.api.EclipticSeasonsApi;
 import com.teamtea.eclipticseasons.api.constant.solar.SolarTerm;
+import com.teamtea.eclipticseasons.api.util.EclipticUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
@@ -29,10 +30,19 @@ public final class SnowlineCalculator {
 
         int ordinal = term.ordinal();
         int daysInTerm = Math.max(1, api.getLastingDaysOfEachTerm(level));
-        double dayProgress = Math.floorMod(level.getGameTime(), 24000L) / 24000.0;
+
+        // Ecliptic Seasons advances its own solar calendar using the world's
+        // default clock, not Level#getGameTime() or a hard-coded 24000 ticks.
+        // This mirrors its own client progress calculation, but retains full
+        // precision instead of the UI's 10-step display rounding.
+        int dayLength = Math.max(1, EclipticUtil.getDayLengthInMinecraft(level));
+        double dayProgress = Math.floorMod(level.getDefaultClockTime(), (long) dayLength)
+                / (double) dayLength;
         double termProgress = (api.getDayInTerm(level) + dayProgress) / daysInTerm;
         termProgress = Math.max(0.0, Math.min(1.0, termProgress));
 
+        // SolarTerm enum order is six terms per season:
+        // 0-5 spring, 6-11 summer, 12-17 autumn, 18-23 winter.
         // Spring: rise continuously from Y=0 to Y=250 by the beginning of summer.
         if (ordinal <= 5) {
             double progress = (ordinal + termProgress) / 6.0;
