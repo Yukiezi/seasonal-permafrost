@@ -24,9 +24,10 @@ public abstract class RealSnowPlacementMixin {
     private static void seasonalPermafrost$allowRealSnow(ServerLevel level, Holder<Biome> biomeHolder,
             BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         Biome biome = biomeHolder.value();
-        if (!SnowlineCalculator.shouldOverride(biome)) return;
+        if (!level.dimension().equals(net.minecraft.world.level.Level.OVERWORLD)
+                || !SnowlineCalculator.shouldOverride(biome)) return;
 
-        boolean aboveSnowline = pos.getY() > SnowlineCalculator.getSnowline(level);
+        boolean aboveSnowline = SnowlineCalculator.hasSnowAt(level, biome, pos);
         boolean validHeight = pos.getY() >= level.getMinY() && pos.getY() < level.getMaxY();
         boolean lowBlockLight = level.getBrightness(LightLayer.BLOCK, pos) < 10;
         BlockState state = level.getBlockState(pos);
