@@ -22,7 +22,7 @@ Warm biomes (for example deserts, jungles, savannas, and badlands) are excluded.
 
 ## Status
 
-Specification established. Implementation, compile verification, and in-game validation are still pending.
+Initial implementation committed. GitHub Actions compile verification is running; in-game validation is still pending. The snowline hook is applied through Ecliptic Seasons' level-aware snowline check, so both client and server use the active world's solar-term progress.
 
 ## Important distinction
 
