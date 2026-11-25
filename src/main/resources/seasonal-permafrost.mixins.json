@@ -2,6 +2,6 @@
   "required": true,
   "package": "dev.yukiezi.permafrost.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": ["ServerSnowlineMixin"],
+  "mixins": ["SnowlineMixin"],
   "injectors": { "defaultRequire": 1 }
 }
