@@ -18,6 +18,6 @@ public abstract class ServerSnowlineMixin {
             CallbackInfoReturnable<Boolean> cir) {
         if (level == null || !level.dimension().equals(Level.OVERWORLD)
                 || !SnowlineCalculator.shouldOverride(biome)) return;
-        cir.setReturnValue(pos.getY() > SnowlineCalculator.getSnowline(level));
+        cir.setReturnValue(SnowlineCalculator.hasSnowAt(level, biome, pos));
     }
 }
