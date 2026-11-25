@@ -15,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class WeatherManagerSnowfallMixin {
     @Inject(
             method = "getPrecipitationAt(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/biome/Biome;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;",
-            at = @At("RETURN")
+            at = @At("RETURN"),
+            cancellable = true
     )
     private static void seasonalPermafrost$precipitation(Level level, Biome biome, BlockPos pos,
             CallbackInfoReturnable<Precipitation> cir) {
@@ -26,7 +27,8 @@ public abstract class WeatherManagerSnowfallMixin {
 
     @Inject(
             method = "getRainOrSnow(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/level/biome/Biome;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/biome/Biome$Precipitation;",
-            at = @At("RETURN")
+            at = @At("RETURN"),
+            cancellable = true
     )
     private static void seasonalPermafrost$rainOrSnow(Level level, Biome biome, BlockPos pos,
             CallbackInfoReturnable<Precipitation> cir) {
