@@ -1,7 +1,7 @@
 {
-  "required": true,
+  "required": false,
   "package": "dev.yukiezi.permafrost.mixin",
   "compatibilityLevel": "JAVA_25",
-  "client": ["ClientSnowlineMixin"],
+  "client": [],
   "injectors": { "defaultRequire": 1 }
 }
